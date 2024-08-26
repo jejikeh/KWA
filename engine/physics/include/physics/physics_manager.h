@@ -34,7 +34,6 @@ public:
     ~PhysicsManager();
 
     physx::PxPhysics& get_physics() const;
-    //physx::PxCooking& get_cooking() const;
     physx::PxCpuDispatcher& get_cpu_dispatcher();
     physx::PxMaterial& get_default_material() const;
 
