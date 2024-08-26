@@ -102,7 +102,6 @@ int WINAPI WinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPSTR /
     window_descriptor.height = 800;
 
     Window window(window_descriptor);
-    window.set_cursor(window.get_cursor());
 
     Input input(window);
 

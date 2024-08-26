@@ -1637,11 +1637,6 @@ GraphicsPipeline* FrameGraphVulkan::create_graphics_pipeline(const GraphicsPipel
     //
 
     if (graphics_pipeline_descriptor.fragment_shader_filename != nullptr) {
-        //KW_ERROR(
-        //    vertex_shader_reflection.output_variable_count == fragment_shader_reflection.input_variable_count,
-        //    "Mismatching number of variables between shader stages in \"%s\" and \"%s\"", graphics_pipeline_descriptor.vertex_shader_filename, graphics_pipeline_descriptor.fragment_shader_filename
-        //);
-
         for (size_t i = 0; i < vertex_shader_reflection.output_variable_count; i++) {
             const SpvReflectInterfaceVariable* output_variable = vertex_shader_reflection.output_variables[i];
             
