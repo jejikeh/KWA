@@ -60,9 +60,7 @@ public:
         height_field_descriptor.samples.data = samples.data();
         height_field_descriptor.samples.stride = sizeof(physx::PxHeightFieldSample);
 
-        PhysicsPtr<physx::PxHeightField> height_field = m_manager.m_physics_manager.get_cooking().createHeightField(
-            height_field_descriptor, m_manager.m_physics_manager.get_physics().getPhysicsInsertionCallback()
-        );
+        PhysicsPtr<physx::PxHeightField> height_field = PxCreateHeightField(height_field_descriptor);
 
         m_height_fields = HeightField(m_manager.m_height_field_notifier, std::move(height_field));
 

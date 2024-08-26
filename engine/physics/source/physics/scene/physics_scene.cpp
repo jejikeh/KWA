@@ -27,7 +27,11 @@ public:
         return (shape->getQueryFilterData().word0 & filterData.word0) != 0 ? physx::PxQueryHitType::eBLOCK : physx::PxQueryHitType::eNONE;
     }
 
-    physx::PxQueryHitType::Enum postFilter(const physx::PxFilterData& filterData, const physx::PxQueryHit& hit) override {
+    physx::PxQueryHitType::Enum postFilter(const physx::PxFilterData& filterData, const physx::PxQueryHit& hit) {
+        return physx::PxQueryHitType::eBLOCK;
+    }
+
+    virtual physx::PxQueryHitType::Enum postFilter(const physx::PxFilterData& filterData, const physx::PxQueryHit& hit, const physx::PxShape* shape, const physx::PxRigidActor* actor) override {
         return physx::PxQueryHitType::eBLOCK;
     }
 };

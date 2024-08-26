@@ -1637,10 +1637,10 @@ GraphicsPipeline* FrameGraphVulkan::create_graphics_pipeline(const GraphicsPipel
     //
 
     if (graphics_pipeline_descriptor.fragment_shader_filename != nullptr) {
-        KW_ERROR(
-            vertex_shader_reflection.output_variable_count == fragment_shader_reflection.input_variable_count,
-            "Mismatching number of variables between shader stages in \"%s\" and \"%s\"", graphics_pipeline_descriptor.vertex_shader_filename, graphics_pipeline_descriptor.fragment_shader_filename
-        );
+        //KW_ERROR(
+        //    vertex_shader_reflection.output_variable_count == fragment_shader_reflection.input_variable_count,
+        //    "Mismatching number of variables between shader stages in \"%s\" and \"%s\"", graphics_pipeline_descriptor.vertex_shader_filename, graphics_pipeline_descriptor.fragment_shader_filename
+        //);
 
         for (size_t i = 0; i < vertex_shader_reflection.output_variable_count; i++) {
             const SpvReflectInterfaceVariable* output_variable = vertex_shader_reflection.output_variables[i];
@@ -1654,20 +1654,6 @@ GraphicsPipeline* FrameGraphVulkan::create_graphics_pipeline(const GraphicsPipel
                 output_variable->semantic != nullptr,
                 "Invalid output variable semantic in \"%s\".", graphics_pipeline_descriptor.vertex_shader_filename
             );
-
-            const SpvReflectInterfaceVariable* input_variable = spvReflectGetInputVariableBySemantic(&fragment_shader_reflection, output_variable->semantic, nullptr);
-
-            KW_ERROR(
-                input_variable != nullptr,
-                "Failed to find fragment shader input variable \"%s\" in \"%s\".", output_variable->semantic, graphics_pipeline_descriptor.fragment_shader_filename
-            );
-
-            if (output_variable->location != input_variable->location) {
-                SPV_ERROR(
-                    spvReflectChangeInputVariableLocation(&fragment_shader_reflection, input_variable, output_variable->location),
-                    "Failed to change fragment shader input variable \"%s\" location in \"%s\".", input_variable->location, graphics_pipeline_descriptor.fragment_shader_filename
-                );
-            }
         }
     }
 

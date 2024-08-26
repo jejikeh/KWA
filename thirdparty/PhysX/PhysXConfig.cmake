@@ -1,156 +1,277 @@
-cmake_minimum_required(VERSION 3.20)
+include(FindPackageHandleStandardArgs)
+include(SelectLibraryConfigurations)
 
-find_path(PHYSX_INCLUDES NAMES "PxScene.h" REQUIRED)
+if(CMAKE_SIZEOF_VOID_P EQUAL "8")
+    set(_PHYSX_LIBRARY_SUFFIX "64")
+else()
+    set(_PHYSX_LIBRARY_SUFFIX "32")
+endif()
 
-find_library(PhysX_LIBRARY_RELEASE NAMES "PhysX_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXCharacterKinematic_LIBRARY_RELEASE NAMES "PhysXCharacterKinematic_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXCooking_LIBRARY_RELEASE NAMES "PhysXCooking_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXExtensions_LIBRARY_RELEASE NAMES "PhysXExtensions_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXVehicle_LIBRARY_RELEASE NAMES "PhysXVehicle_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(SimulationController_LIBRARY_RELEASE NAMES "SimulationController_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXFoundation_LIBRARY_RELEASE NAMES "PhysXFoundation_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(LowLevel_LIBRARY_RELEASE NAMES "LowLevel_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(LowLevelAABB_LIBRARY_RELEASE NAMES "LowLevelAABB_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(LowLevelDynamics_LIBRARY_RELEASE NAMES "LowLevelDynamics_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXCommon_LIBRARY_RELEASE NAMES "PhysXCommon_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(SceneQuery_LIBRARY_RELEASE NAMES "SceneQuery_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXTask_LIBRARY_RELEASE NAMES "PhysXTask_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXPvdSDK_LIBRARY_RELEASE NAMES "PhysXPvdSDK_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-
-find_library(PhysX_LIBRARY_DEBUG NAMES "PhysX_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXCharacterKinematic_LIBRARY_DEBUG NAMES "PhysXCharacterKinematic_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXCooking_LIBRARY_DEBUG NAMES "PhysXCooking_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXExtensions_LIBRARY_DEBUG NAMES "PhysXExtensions_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXVehicle_LIBRARY_DEBUG NAMES "PhysXVehicle_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(SimulationController_LIBRARY_DEBUG NAMES "SimulationController_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXFoundation_LIBRARY_DEBUG NAMES "PhysXFoundation_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(LowLevel_LIBRARY_DEBUG NAMES "LowLevel_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(LowLevelAABB_LIBRARY_DEBUG NAMES "LowLevelAABB_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(LowLevelDynamics_LIBRARY_DEBUG NAMES "LowLevelDynamics_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXCommon_LIBRARY_DEBUG NAMES "PhysXCommon_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(SceneQuery_LIBRARY_DEBUG NAMES "SceneQuery_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXTask_LIBRARY_DEBUG NAMES "PhysXTask_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-find_library(PhysXPvdSDK_LIBRARY_DEBUG NAMES "PhysXPvdSDK_static_64" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "lib" REQUIRED NO_DEFAULT_PATH)
-
-find_file(PhysX_RELEASE NAMES "PhysX_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-find_file(PhysXCommon_RELEASE NAMES "PhysXCommon_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-find_file(PhysXCooking_RELEASE NAMES "PhysXCooking_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-find_file(PhysXFoundation_RELEASE NAMES "PhysXFoundation_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-
-find_file(PhysX_DEBUG NAMES "PhysX_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-find_file(PhysXCommon_DEBUG NAMES "PhysXCommon_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-find_file(PhysXCooking_DEBUG NAMES "PhysXCooking_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-find_file(PhysXFoundation_DEBUG NAMES "PhysXFoundation_64.dll" PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug" PATH_SUFFIXES "bin" REQUIRED NO_DEFAULT_PATH)
-
-add_library(PhysX::PhysX_ SHARED IMPORTED)
-set_target_properties(
-    PhysX::PhysX_ PROPERTIES
-    IMPORTED_LOCATION "${PhysX_RELEASE}"
-    IMPORTED_IMPLIB "${PhysX_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysX_DEBUG}"
-    IMPORTED_IMPLIB_DEBUG "${PhysX_LIBRARY_DEBUG}"
+set(_PHYSX_COMMON_LIBRARY_NAMES
+    PhysXCommon
+    PhysXCommon_static
+    PhysXCommon_${_PHYSX_LIBRARY_SUFFIX}
+    PhysXCommon_static_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXCommon
+    libPhysXCommon_static
+    libPhysXCommon_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXCommon_static_${_PHYSX_LIBRARY_SUFFIX}
+)
+set(_PHYSX_PHYSICS_LIBRARY_NAMES
+    PhysX
+    PhysX_static
+    PhysX_${_PHYSX_LIBRARY_SUFFIX}
+    PhysX_static_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysX
+    libPhysX_static
+    libPhysX_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysX_static_${_PHYSX_LIBRARY_SUFFIX}
+)
+set(_PHYSX_FOUNDATION_LIBRARY_NAMES
+    PhysXFoundation
+    PhysXFoundation_static
+    PhysXFoundation_${_PHYSX_LIBRARY_SUFFIX}
+    PhysXFoundation_static_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXFoundation
+    libPhysXFoundation_static
+    libPhysXFoundation_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXFoundation_static_${_PHYSX_LIBRARY_SUFFIX}
+)
+set(_PHYSX_COOKING_LIBRARY_NAMES
+    PhysXCooking
+    PhysXCooking_static
+    PhysXCooking_${_PHYSX_LIBRARY_SUFFIX}
+    PhysXCooking_static_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXCooking
+    libPhysXCooking_static
+    libPhysXCooking_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXCooking_static_${_PHYSX_LIBRARY_SUFFIX}
+)
+set(_PHYSX_EXTENSIONS_LIBRARY_NAMES
+    PhysXExtensions
+    PhysXExtensions_static
+    PhysXExtensions_${_PHYSX_LIBRARY_SUFFIX}
+    PhysXExtensions_static_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXExtensions
+    libPhysXExtensions_static
+    libPhysXExtensions_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXExtensions_static_${_PHYSX_LIBRARY_SUFFIX}
+)
+set(_PHYSX_CHARACTER_LIBRARY_NAMES
+    PhysXCharacterKinematic
+    PhysXCharacterKinematic_static
+    PhysXCharacterKinematic_${_PHYSX_LIBRARY_SUFFIX}
+    PhysXCharacterKinematic_static_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXCharacterKinematic
+    libPhysXCharacterKinematic_static
+    libPhysXCharacterKinematic_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXCharacterKinematic_static_${_PHYSX_LIBRARY_SUFFIX}
+)
+set(_PHYSX_PVD_LIBRARY_NAMES
+    PhysXPvdSDK
+    PhysXPvdSDK_static
+    PhysXPvdSDK_${_PHYSX_LIBRARY_SUFFIX}
+    PhysXPvdSDK_static_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXPvdSDK
+    libPhysXPvdSDK_static
+    libPhysXPvdSDK_${_PHYSX_LIBRARY_SUFFIX}
+    libPhysXPvdSDK_static_${_PHYSX_LIBRARY_SUFFIX}
 )
 
-add_library(PhysX::PhysXCharacterKinematic STATIC IMPORTED)
-set_target_properties(
-    PhysX::PhysXCharacterKinematic PROPERTIES
-    IMPORTED_LOCATION "${PhysXCharacterKinematic_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXCharacterKinematic_LIBRARY_DEBUG}"
+# Stoopid vcpkg build debug and optimized libraries with the same name but in different directories.
+foreach(prefix_path IN LISTS CMAKE_PREFIX_PATH)
+    if(${prefix_path} MATCHES "[Dd][Ee][Bb][Uu][Gg]\/?$")
+        list(APPEND _PHYSX_DEBUG_PATHS ${prefix_path})
+    else()
+        list(APPEND _PHYSX_RELEASE_PATHS ${prefix_path})
+    endif()
+    list(APPEND _PHYSX_PREFIX ${prefix_path})
+endforeach()
+
+# For non-vcpkg builds... *Gulp*
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    if(MSVC)
+        set(_PHYSX_BIN_DIR "win.")
+        if(CMAKE_SIZEOF_VOID_P EQUAL "8")
+            string(APPEND _PHYSX_BIN_DIR "x86_64.")
+        else()
+            string(APPEND _PHYSX_BIN_DIR "x86.")
+        endif()
+        string(APPEND _PHYSX_BIN_DIR "vc${MSVC_TOOLSET_VERSION}.mt")
+    endif()
+
+    if(MSVC_TOOLSET_VERSION EQUAL 120)
+        set(_PHYSX_DIR "vc12win${_PHYSX_LIBRARY_SUFFIX}")
+    # There is no toolset version 130...
+    elseif(MSVC_TOOLSET_VERSION EQUAL 140)
+        set(_PHYSX_DIR "vc14win${_PHYSX_LIBRARY_SUFFIX}")
+    elseif(MSVC_TOOLSET_VERSION EQUAL 141)
+        set(_PHYSX_DIR "vc15win${_PHYSX_LIBRARY_SUFFIX}")
+    elseif(MSVC_TOOLSET_VERSION EQUAL 142)
+        set(_PHYSX_DIR "vc16win${_PHYSX_LIBRARY_SUFFIX}")
+    elseif(NOT VCPKG_TOOLCHAIN)
+        message(WARNING "PhysX: Unhandled MSVC Toolset ${MSVC_TOOLSET_VERSION}. You may need to manually specify artifacts.")
+    endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(_PHYSX_DIR "linux")
+    set(_PHYSX_BIN_DIR "linux.clang")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(_PHYSX_DIR "mac64")
+    set(_PHYSX_BIN_DIR "mac64.xcode")
+elseif(NOT VCPKG_TOOLCHAIN)
+    message(WARNING "PhysX: Unhandled system: ${CMAKE_SYSTEM_NAME}. You may need to manually specify artifacts.")
+endif()
+
+if(_PHYSX_DIR)
+    foreach(prefix_path ${CMAKE_PREFIX_PATH})
+        if(_PHYSX_BIN_DIR)
+            list(APPEND _PHYSX_DEBUG_PATHS "${prefix_path}/${_PHYSX_DIR}/PhysX/bin/${_PHYSX_BIN_DIR}/debug")
+            list(APPEND _PHYSX_RELEASE_PATHS "${prefix_path}/${_PHYSX_DIR}/PhysX/bin/${_PHYSX_BIN_DIR}/release")
+        elseif(NOT VCPKG_TOOLCHAIN)
+            list(APPEND _PHYSX_DEBUG_PATHS ${prefix_path})
+            list(APPEND _PHYSX_RELEASE_PATHS ${prefix_path})
+        endif()
+        list(APPEND _PHYSX_PREFIX "${prefix_path}/${_PHYSX_DIR}/PhysX")
+        list(APPEND _PHYSX_PREFIX "${prefix_path}/${_PHYSX_DIR}/PxShared")
+    endforeach()
+elseif(NOT VCPKG_TOOLCHAIN)
+    set(_PHYSX_DEBUG_PATHS ${CMAKE_PREFIX_PATH})
+    set(_PHYSX_RELEASE_PATHS ${CMAKE_PREFIX_PATH})
+endif()
+
+if(VCPKG_TOOLCHAIN)
+    set(_PHYSX_SKIP_SYSTEM_PATHS NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH)
+endif()
+
+find_path(PHYSX_INCLUDE_DIR NAMES PxPhysicsAPI.h
+          PATHS ${_PHYSX_PREFIX}
+          PATH_SUFFIXES include/physx include
+          NO_CMAKE_PATH
+          ${_PHYSX_SKIP_SYSTEM_PATHS}
+)
+mark_as_advanced(PHYSX_INCLUDE_DIR)
+
+# PhysX has two include directories, but vcpkg merges them together. In case of a manual build,
+# check and compensate for the lack of merging here.
+if(PHYSX_INCLUDE_DIR)
+    if(NOT EXISTS ${PHYSX_INCLUDE_DIR}/foundation/Px.h)
+        find_path(PHYSX_FOUNDATION_INCLUDE_DIR NAMES foundation/Px.h
+                  PATHS ${_PHYSX_PREFIX}
+                  PATH_SUFFIXES include/physx include
+                  NO_CMAKE_PATHS
+                  ${_PHYSX_SKIP_SYSTEM_PATHS}
+        )
+        mark_as_advanced(PHYSX_FOUNDATION_INCLUDE_DIR)
+    else()
+        set(PHYSX_FOUNDATION_INCLUDE_DIR ${PHYSX_INCLUDE_DIR} CACHE PATH "Path to a file.")
+    endif()
+endif()
+
+macro(_find_physx_library SUFFIX)
+    cmake_parse_arguments(_fpl "FOUNDATION_INCLUDE" "" "INTERFACE_LIBS" ${ARGN})
+
+    string(TOUPPER ${SUFFIX} _SUFFIX_UPPER)
+    set(VAR_NAME "PHYSX_${_SUFFIX_UPPER}")
+    set(TARGET "PhysX::${SUFFIX}")
+
+    find_library(${VAR_NAME}_LIBRARY_RELEASE
+                 NAMES ${_${VAR_NAME}_LIBRARY_NAMES}
+                 PATHS ${_PHYSX_RELEASE_PATHS}
+                 PATH_SUFFIXES lib
+                 NO_CMAKE_PATH
+                 ${_PHYSX_SKIP_SYSTEM_PATHS}
+    )
+    find_library(${VAR_NAME}_LIBRARY_DEBUG
+                 NAMES ${_${VAR_NAME}_LIBRARY_NAMES}
+                 PATHS ${_PHYSX_DEBUG_PATHS}
+                 PATH_SUFFIXES lib
+                 NO_CMAKE_PATH
+                 ${_PHYSX_SKIP_SYSTEM_PATHS}
+    )
+    select_library_configurations(${VAR_NAME})
+
+    if(${VAR_NAME}_LIBRARY AND NOT TARGET ${TARGET})
+        add_library(${TARGET} UNKNOWN IMPORTED)
+
+        if(DEFINED _fpl_FOUNDATION_INCLUDE AND EXISTS "${PHYSX_FOUNDATION_INCLUDE_DIR}")
+            set_property(
+                TARGET ${TARGET} APPEND PROPERTY
+                INTERFACE_INCLUDE_DIRECTORIES ${PHYSX_FOUNDATION_INCLUDE_DIR}
+            )
+        endif()
+
+        if(EXISTS "${PHYSX_INCLUDE_DIR}")
+            set_property(
+                TARGET ${TARGET} APPEND PROPERTY
+                INTERFACE_INCLUDE_DIRECTORIES ${PHYSX_INCLUDE_DIR}
+            )
+        else()
+            message(FATAL_ERROR "PhysX include directory missing: ${PHYSX_INCLUDE_DIR}")
+        endif()
+
+        if(EXISTS "${${VAR_NAME}_LIBRARY_DEBUG}" AND EXISTS "${${VAR_NAME}_LIBRARY_RELEASE}")
+            set_target_properties(
+                ${TARGET} PROPERTIES
+                IMPORTED_LOCATION ${${VAR_NAME}_LIBRARY_RELEASE}
+                IMPORTED_LOCATION_DEBUG ${${VAR_NAME}_LIBRARY_DEBUG}
+                IMPORTED_LOCATION_RELEASE ${${VAR_NAME}_LIBRARY_RELEASE}
+                MAP_IMPORTED_CONFIG_MINSIZEREL Release
+                MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release
+            )
+        elseif(EXISTS "${${VAR_NAME}_LIBRARY}")
+            set_target_properties(
+                ${TARGET} PROPERTIES
+                IMPORTED_LOCATION ${${VAR_NAME}_LIBRARY}
+            )
+        else()
+            message(FATAL_ERROR "PhysX ${SUFFIX} library missing: ${${VAR_NAME}_LIBRARY}")
+        endif()
+
+        if(DEFINED _fpl_INTERFACE_LIBS)
+            set_property(
+                TARGET ${TARGET} APPEND PROPERTY
+                INTERFACE_LINK_LIBRARIES ${_fpl_INTERFACE_LIBS}
+            )
+        endif()
+
+        # The PhysX headers require that either _DEBUG or NDEBUG is always
+        # defined (but not both at once), otherwise they produce an error.
+        target_compile_definitions(${TARGET} INTERFACE
+            $<IF:$<CONFIG:Debug>,_DEBUG,NDEBUG>
+        )
+    endif()
+
+    unset(TARGET)
+    unset(VAR_NAME)
+    unset(_SUFFIX_UPPER)
+endmacro()
+
+_find_physx_library(Common)
+_find_physx_library(Physics INTERFACE_LIBS ${CMAKE_DL_LIBS})
+_find_physx_library(Foundation FOUNDATION_INCLUDE)
+_find_physx_library(Cooking)
+_find_physx_library(Extensions)
+_find_physx_library(Character)
+_find_physx_library(PVD)
+
+find_package_handle_standard_args(PhysX
+                                  REQUIRED_VARS PHYSX_COMMON_LIBRARY
+                                                PHYSX_PHYSICS_LIBRARY
+                                                PHYSX_FOUNDATION_LIBRARY
+                                                PHYSX_COOKING_LIBRARY
+                                                PHYSX_EXTENSIONS_LIBRARY
+                                                PHYSX_CHARACTER_LIBRARY
+                                                PHYSX_PVD_LIBRARY
+                                                PHYSX_INCLUDE_DIR
+                                                PHYSX_FOUNDATION_INCLUDE_DIR
+                                  REASON_FAILURE_MESSAGE "Be sure that PhysX 4.1 is available."
 )
 
-add_library(PhysX::PhysXCooking SHARED IMPORTED)
-set_target_properties(
-    PhysX::PhysXCooking PROPERTIES
-    IMPORTED_LOCATION "${PhysXCooking_RELEASE}"
-    IMPORTED_IMPLIB "${PhysXCooking_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXCooking_DEBUG}"
-    IMPORTED_IMPLIB_DEBUG "${PhysXCooking_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::PhysXExtensions STATIC IMPORTED)
-set_target_properties(
-    PhysX::PhysXExtensions PROPERTIES
-    IMPORTED_LOCATION "${PhysXExtensions_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXExtensions_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::PhysXVehicle STATIC IMPORTED)
-set_target_properties(
-    PhysX::PhysXVehicle PROPERTIES
-    IMPORTED_LOCATION "${PhysXVehicle_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXVehicle_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::SimulationController STATIC IMPORTED)
-set_target_properties(
-    PhysX::SimulationController PROPERTIES
-    IMPORTED_LOCATION "${SimulationController_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${SimulationController_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::PhysXFoundation SHARED IMPORTED)
-set_target_properties(
-    PhysX::PhysXFoundation PROPERTIES
-    IMPORTED_LOCATION "${PhysXFoundation_RELEASE}"
-    IMPORTED_IMPLIB "${PhysXFoundation_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXFoundation_DEBUG}"
-    IMPORTED_IMPLIB_DEBUG "${PhysXFoundation_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::LowLevel STATIC IMPORTED)
-set_target_properties(
-    PhysX::LowLevel PROPERTIES
-    IMPORTED_LOCATION "${LowLevel_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${LowLevel_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::LowLevelAABB STATIC IMPORTED)
-set_target_properties(
-    PhysX::LowLevelAABB PROPERTIES
-    IMPORTED_LOCATION "${LowLevelAABB_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${LowLevelAABB_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::LowLevelDynamics STATIC IMPORTED)
-set_target_properties(
-    PhysX::LowLevelDynamics PROPERTIES
-    IMPORTED_LOCATION "${LowLevelDynamics_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${LowLevelDynamics_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::PhysXCommon SHARED IMPORTED)
-set_target_properties(
-    PhysX::PhysXCommon PROPERTIES
-    IMPORTED_LOCATION "${PhysXCommon_RELEASE}"
-    IMPORTED_IMPLIB "${PhysXCommon_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXCommon_DEBUG}"
-    IMPORTED_IMPLIB_DEBUG "${PhysXCommon_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::SceneQuery STATIC IMPORTED)
-set_target_properties(
-    PhysX::SceneQuery PROPERTIES
-    IMPORTED_LOCATION "${SceneQuery_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${SceneQuery_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::PhysXTask STATIC IMPORTED)
-set_target_properties(
-    PhysX::PhysXTask PROPERTIES
-    IMPORTED_LOCATION "${PhysXTask_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXTask_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::PhysXPvdSDK STATIC IMPORTED)
-set_target_properties(
-    PhysX::PhysXPvdSDK PROPERTIES
-    IMPORTED_LOCATION "${PhysXPvdSDK_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_DEBUG "${PhysXPvdSDK_LIBRARY_DEBUG}"
-)
-
-add_library(PhysX::PhysX INTERFACE IMPORTED)
-set_target_properties(
-    PhysX::PhysX PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${PHYSX_INCLUDES}"
-    INTERFACE_LINK_LIBRARIES "PhysX::PhysX_;PhysX::PhysXCharacterKinematic;PhysX::PhysXCooking;PhysX::PhysXExtensions;PhysX::PhysXVehicle;PhysX::SimulationController;PhysX::PhysXFoundation;PhysX::LowLevel;PhysX::LowLevelAABB;PhysX::LowLevelDynamics;PhysX::PhysXCommon;PhysX::SceneQuery;PhysX::PhysXTask;PhysX::PhysXPvdSDK"
-)
+if(PhysX_FOUND AND NOT TARGET PhysX::PhysX)
+    add_library(PhysX::PhysX INTERFACE IMPORTED)
+    set_property(
+        TARGET PhysX::PhysX APPEND PROPERTY
+        INTERFACE_LINK_LIBRARIES PhysX::Character PhysX::Extensions PhysX::Physics
+                                 PhysX::PVD PhysX::Cooking PhysX::Common PhysX::Foundation
+    )
+endif()

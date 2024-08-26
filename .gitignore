@@ -1,3 +1,6 @@
 _build/
 *.aps
 imgui.ini
+build
+.vs
+vcpkg_installed/

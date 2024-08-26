@@ -3,10 +3,10 @@
 #include <core/debug/log.h>
 #include <core/error.h>
 
-#include <PxFoundation.h>
+#include <foundation/PxFoundation.h>
 #include <PxMaterial.h>
 #include <PxPhysics.h>
-#include <PxPhysicsVersion.h>
+#include <foundation/PxPhysicsVersion.h>
 #include <cooking/PxCooking.h>
 #include <extensions/PxDefaultCpuDispatcher.h>
 #include <extensions/PxExtensionsAPI.h>
@@ -72,10 +72,6 @@ PhysicsManager::PhysicsManager(const PhysicsManagerDescriptor& descriptor)
 
     KW_ERROR(PxInitExtensions(*m_physics, m_visual_debugger.get()), "Failed to init PhysX extensions.");
 
-    physx::PxCookingParams cooking_params(scale);
-    m_cooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_foundation, cooking_params);
-    KW_ERROR(m_cooking != nullptr, "Failed to create PhysX cooking.");
-
     // TODO: Custom CPU dispatcher that makes use of task scheduler.
     m_cpu_dispatcher = physx::PxDefaultCpuDispatcherCreate(0);
     KW_ERROR(m_cpu_dispatcher != nullptr, "Failed to create PhysX CPU dispatcher.");
@@ -89,10 +85,6 @@ PhysicsManager::~PhysicsManager() = default;
 
 physx::PxPhysics& PhysicsManager::get_physics() const {
     return *m_physics;
-}
-
-physx::PxCooking& PhysicsManager::get_cooking() const {
-    return *m_cooking;
 }
 
 physx::PxCpuDispatcher& PhysicsManager::get_cpu_dispatcher() {

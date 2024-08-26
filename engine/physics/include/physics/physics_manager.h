@@ -34,7 +34,7 @@ public:
     ~PhysicsManager();
 
     physx::PxPhysics& get_physics() const;
-    physx::PxCooking& get_cooking() const;
+    //physx::PxCooking& get_cooking() const;
     physx::PxCpuDispatcher& get_cpu_dispatcher();
     physx::PxMaterial& get_default_material() const;
 
@@ -48,7 +48,6 @@ private:
     PhysicsPtr<physx::PxPvdTransport> m_visual_debugger_transport;
     PhysicsPtr<physx::PxPvd> m_visual_debugger;
     PhysicsPtr<physx::PxPhysics> m_physics;
-    PhysicsPtr<physx::PxCooking> m_cooking;
     PhysicsPtr<physx::PxDefaultCpuDispatcher> m_cpu_dispatcher;
     PhysicsPtr<physx::PxMaterial> m_default_material;
 };

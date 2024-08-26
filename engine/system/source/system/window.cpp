@@ -12,7 +12,7 @@ Window::Window(const WindowDescriptor& descriptor) {
     KW_ASSERT(descriptor.title != nullptr);
 
     m_window = SDL_CreateWindow(descriptor.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, static_cast<int>(descriptor.width), static_cast<int>(descriptor.height), SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_VULKAN);
-    KW_ERROR(m_window != nullptr, "Failed to create window");
+    KW_ERROR(m_window != nullptr, "Failed to create window %s", SDL_GetError());
 
     SDL_SetWindowData(m_window, "Window", this);
 
@@ -60,11 +60,11 @@ void Window::set_cursor(Cursor cursor) {
 }
 
 bool Window::is_cursor_shown() const {
-    return SDL_ShowCursor(-1) == 1;
+    return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
 }
 
 void Window::toggle_cursor(bool is_shown) {
-    SDL_ShowCursor(is_shown ? 1 : 0);
+    SDL_ShowCursor(is_shown ? SDL_ENABLE : SDL_DISABLE);
 }
 
 uint32_t Window::get_width() const {

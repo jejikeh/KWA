@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
+set (CMAKE_CXX_FLAGS "-DENABLE_SPIRV_CODEGEN=ON")
+
 file(GLOB_RECURSE render_example_sources "source/*.cpp" "source/*.h")
 add_executable(render_example WIN32 ${render_example_sources})
 

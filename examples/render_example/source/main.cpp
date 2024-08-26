@@ -102,6 +102,7 @@ int WINAPI WinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPSTR /
     window_descriptor.height = 800;
 
     Window window(window_descriptor);
+    window.set_cursor(window.get_cursor());
 
     Input input(window);
 
@@ -490,6 +491,7 @@ int WINAPI WinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPSTR /
     scene.add_child(std::move(player));
 
     bool is_running = true;
+    bool is_debug = true;
     while (is_running) {
         transient_memory_resource.reset();
 
@@ -510,6 +512,11 @@ int WINAPI WinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPSTR /
 
         if (input.is_key_pressed(Scancode::ESCAPE)) {
             is_running = false;
+        }
+
+        if (input.is_key_pressed(Scancode::TAB)) {
+            ImGuiIO& io = imgui_manager.get_imgui().GetIO();
+            io.MouseDrawCursor = !io.MouseDrawCursor;
         }
 
         if (input.is_key_pressed(Scancode::RETURN)) {

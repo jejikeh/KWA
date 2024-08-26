@@ -12,7 +12,7 @@ MallocMemoryResource& MallocMemoryResource::instance() {
 
 void* MallocMemoryResource::allocate(size_t size, size_t alignment) {
     KW_ASSERT(alignment > 0 && (alignment & (alignment - 1)) == 0, "Alignment must be power of two.");
-    KW_ASSERT(size > 0, "Size must be greater than zero.");
+    //KW_ASSERT(size > 0, "Size must be greater than zero."); // @Cleanup.
 
     return _aligned_malloc(size, alignment);
 }
